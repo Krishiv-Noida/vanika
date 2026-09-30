@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import { Sparkles, ArrowUpRight } from "lucide-react";
+import { Card3D, Card3DItem } from "@/components/3d/Card3D";
 
 const categories = [
   {
@@ -70,32 +73,42 @@ export function CategorySection() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {categories.map((cat) => (
-            <Link
+            <Card3D
               key={cat.value}
-              href={`/shop?category=${cat.value}` as any}
-              className="group relative overflow-hidden rounded-2xl p-5 bg-gradient-to-b from-[#08261c]/80 to-[#051a13]/90 border border-emerald-500/20 hover:border-emerald-400/50 transition-all duration-300 hover:shadow-[0_8px_25px_rgba(16,185,129,0.12)] hover:-translate-y-0.5"
+              maxTilt={12}
+              scale={1.03}
+              className="rounded-2xl bg-gradient-to-b from-[#08261c]/80 to-[#051a13]/90 border border-emerald-500/20 hover:border-emerald-400/50 p-5 transition-colors duration-300 h-full group"
             >
-              <div className="flex items-start justify-between mb-4">
-                <div className="w-11 h-11 rounded-xl bg-emerald-500/15 border border-emerald-400/25 flex items-center justify-center text-2xl group-hover:scale-105 transition-transform">
-                  {cat.emoji}
+              <Link
+                href={`/shop?category=${cat.value}` as any}
+                className="block h-full [transform-style:preserve-3d]"
+              >
+                <div className="flex items-start justify-between mb-4">
+                  <Card3DItem depth={32} className="w-11 h-11 rounded-xl bg-emerald-500/15 border border-emerald-400/25 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform shadow-sm">
+                    {cat.emoji}
+                  </Card3DItem>
+                  <Card3DItem depth={24}>
+                    <span className="text-[10.5px] font-medium px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-300 border border-emerald-500/20 shadow-sm">
+                      {cat.count}
+                    </span>
+                  </Card3DItem>
                 </div>
-                <span className="text-[10.5px] font-medium px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">
-                  {cat.count}
-                </span>
-              </div>
 
-              <h3 className="text-base font-bold text-white group-hover:text-[#4ade80] transition-colors mb-1">
-                {cat.label}
-              </h3>
-              <p className="text-emerald-100/60 text-xs leading-relaxed font-light">
-                {cat.description}
-              </p>
+                <Card3DItem depth={22}>
+                  <h3 className="text-base font-bold text-white group-hover:text-[#4ade80] transition-colors mb-1">
+                    {cat.label}
+                  </h3>
+                  <p className="text-emerald-100/60 text-xs leading-relaxed font-light">
+                    {cat.description}
+                  </p>
+                </Card3DItem>
 
-              <div className="mt-4 flex items-center gap-1 text-[11px] font-semibold text-emerald-400 group-hover:translate-x-1 transition-transform">
-                <span>Browse Category</span>
-                <span>→</span>
-              </div>
-            </Link>
+                <Card3DItem depth={26} className="mt-4 flex items-center gap-1 text-[11px] font-semibold text-emerald-400 group-hover:translate-x-1.5 transition-transform">
+                  <span>Browse Category</span>
+                  <span>→</span>
+                </Card3DItem>
+              </Link>
+            </Card3D>
           ))}
         </div>
       </div>

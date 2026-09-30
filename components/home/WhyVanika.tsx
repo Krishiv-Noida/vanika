@@ -1,4 +1,7 @@
+"use client";
+
 import { Truck, ShieldCheck, BookOpen, Leaf, Users, RefreshCw } from "lucide-react";
+import { Card3D, Card3DItem } from "@/components/3d/Card3D";
 
 const perks = [
   {
@@ -53,20 +56,24 @@ export function WhyVanika() {
           {perks.map((perk) => {
             const Icon = perk.icon;
             return (
-              <div
+              <Card3D
                 key={perk.title}
-                className="p-5 rounded-2xl bg-[#08261c]/60 border border-emerald-500/15 hover:border-emerald-400/40 hover:bg-[#0b3225]/80 transition-all duration-300 shadow-sm group"
+                maxTilt={12}
+                scale={1.03}
+                className="p-5 rounded-2xl bg-[#08261c]/60 border border-emerald-500/15 hover:border-emerald-400/40 hover:bg-[#0b3225]/80 transition-colors duration-300 h-full group"
               >
-                <div className="w-10 h-10 rounded-xl bg-[#0f3427] border border-emerald-400/25 flex items-center justify-center mb-3.5 text-[#4ade80] group-hover:scale-105 transition-transform">
+                <Card3DItem depth={30} className="w-10 h-10 rounded-xl bg-[#0f3427] border border-emerald-400/25 flex items-center justify-center mb-3.5 text-[#4ade80] group-hover:scale-110 transition-transform shadow-sm">
                   <Icon className="w-5 h-5" />
-                </div>
-                <h3 className="text-sm font-bold text-white mb-1 group-hover:text-[#4ade80] transition-colors">
-                  {perk.title}
-                </h3>
-                <p className="text-emerald-100/60 text-xs leading-relaxed font-light">
-                  {perk.description}
-                </p>
-              </div>
+                </Card3DItem>
+                <Card3DItem depth={20}>
+                  <h3 className="text-sm font-bold text-white mb-1 group-hover:text-[#4ade80] transition-colors">
+                    {perk.title}
+                  </h3>
+                  <p className="text-emerald-100/60 text-xs leading-relaxed font-light">
+                    {perk.description}
+                  </p>
+                </Card3DItem>
+              </Card3D>
             );
           })}
         </div>
