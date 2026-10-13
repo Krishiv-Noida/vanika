@@ -46,3 +46,9 @@ app.*.map.json
 
 # Widget Preview related
 .widget_preview/
+
+# Build and distribution artifacts
+dist/
+release_artifacts/
+*.apk
+*.aab

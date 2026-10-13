@@ -1,0 +1,272 @@
+name: Mobile App CI/CD (Flutter & APKs)
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+    paths:
+      - 'mob-ui/**'
+      - '.github/workflows/mob-ui.yml'
+    tags:
+      - 'mob-v*'
+      - 'v*'
+  pull_request:
+    branches:
+      - main
+      - develop
+    paths:
+      - 'mob-ui/**'
+      - '.github/workflows/mob-ui.yml'
+  workflow_dispatch:
+    inputs:
+      build_type:
+        description: 'Build Type (release or debug)'
+        required: true
+        default: 'release'
+        type: choice
+        options:
+          - release
+          - debug
+      build_split_apk:
+        description: 'Build Split APKs per ABI platform (armeabi-v7a, arm64-v8a, x86_64)'
+        type: boolean
+        default: true
+      build_universal_apk:
+        description: 'Build Universal APK'
+        type: boolean
+        default: true
+      build_app_bundle:
+        description: 'Build Android App Bundle (.aab)'
+        type: boolean
+        default: true
+      create_release:
+        description: 'Create GitHub Release with artifacts (manual runs)'
+        type: boolean
+        default: false
+
+concurrency:
+  group: mob-ui-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  test:
+    name: 🧪 Mobile Tests & Analysis
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: mob-ui
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.47.7'
+          channel: 'stable'
+          cache: true
+
+      - name: Cache Pub Dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.pub-cache
+            mob-ui/.dart_tool
+          key: flutter-pub-${{ runner.os }}-${{ hashFiles('mob-ui/pubspec.lock') }}
+          restore-keys: |
+            flutter-pub-${{ runner.os }}-
+
+      - name: Install Dependencies
+        run: flutter pub get
+
+      - name: Run Tests
+        run: flutter test
+
+  build-apks:
+    name: 📱 Build Multi-Platform APKs & Bundle
+    needs: test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: mob-ui
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.47.7'
+          channel: 'stable'
+          cache: true
+
+      - name: Set up Gradle Cache
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Cache Pub Dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.pub-cache
+            mob-ui/.dart_tool
+          key: flutter-pub-${{ runner.os }}-${{ hashFiles('mob-ui/pubspec.lock') }}
+          restore-keys: |
+            flutter-pub-${{ runner.os }}-
+
+      - name: Install Dependencies
+        run: flutter pub get
+
+      - name: Build Split APKs (per ABI Platform)
+        if: ${{ github.event_name != 'workflow_dispatch' || github.event.inputs.build_split_apk != 'false' }}
+        run: |
+          BUILD_MODE="${{ github.event.inputs.build_type || 'release' }}"
+          echo "Building split APKs for mode: $BUILD_MODE"
+          flutter build apk --split-per-abi --$BUILD_MODE
+
+      - name: Build Universal APK
+        if: ${{ github.event_name != 'workflow_dispatch' || github.event.inputs.build_universal_apk != 'false' }}
+        run: |
+          BUILD_MODE="${{ github.event.inputs.build_type || 'release' }}"
+          echo "Building universal APK for mode: $BUILD_MODE"
+          flutter build apk --$BUILD_MODE
+
+      - name: Build Android App Bundle (.aab)
+        if: ${{ github.event_name != 'workflow_dispatch' || github.event.inputs.build_app_bundle != 'false' }}
+        run: |
+          BUILD_MODE="${{ github.event.inputs.build_type || 'release' }}"
+          echo "Building App Bundle for mode: $BUILD_MODE"
+          flutter build appbundle --$BUILD_MODE
+
+      - name: Organize Release Artifacts
+        run: |
+          mkdir -p dist/apks dist/bundle dist/all
+
+          # Copy ABI-split APKs
+          if [ -f "build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk" ]; then
+            cp build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk dist/apks/vanika-armeabi-v7a.apk
+          fi
+          if [ -f "build/app/outputs/flutter-apk/app-arm64-v8a-release.apk" ]; then
+            cp build/app/outputs/flutter-apk/app-arm64-v8a-release.apk dist/apks/vanika-arm64-v8a.apk
+          fi
+          if [ -f "build/app/outputs/flutter-apk/app-x86_64-release.apk" ]; then
+            cp build/app/outputs/flutter-apk/app-x86_64-release.apk dist/apks/vanika-x86_64.apk
+          fi
+
+          # Copy Universal APK
+          if [ -f "build/app/outputs/flutter-apk/app-release.apk" ]; then
+            cp build/app/outputs/flutter-apk/app-release.apk dist/apks/vanika-universal.apk
+          fi
+
+          # Copy App Bundle if present
+          if [ -f "build/app/outputs/bundle/release/app-release.aab" ]; then
+            cp build/app/outputs/bundle/release/app-release.aab dist/bundle/vanika-release.aab
+          fi
+
+          # Collect all for distribution
+          cp dist/apks/* dist/all/ 2>/dev/null || true
+          cp dist/bundle/* dist/all/ 2>/dev/null || true
+
+          # Generate SHA256 checksums
+          cd dist/all
+          sha256sum * > SHA256SUMS.txt
+          cat SHA256SUMS.txt
+          cd ../..
+
+      - name: Publish Build Summary
+        run: |
+          echo "### 📱 Vanika Mobile - Build Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Artifact Name | Target Architecture / Platform | Size |" >> $GITHUB_STEP_SUMMARY
+          echo "| :--- | :--- | :--- |" >> $GITHUB_STEP_SUMMARY
+          
+          if [ -f "dist/apks/vanika-arm64-v8a.apk" ]; then
+            SIZE=$(du -h dist/apks/vanika-arm64-v8a.apk | cut -f1)
+            echo "| \`vanika-arm64-v8a.apk\` | **ARM 64-bit** (Most modern Android phones) | $SIZE |" >> $GITHUB_STEP_SUMMARY
+          fi
+          if [ -f "dist/apks/vanika-armeabi-v7a.apk" ]; then
+            SIZE=$(du -h dist/apks/vanika-armeabi-v7a.apk | cut -f1)
+            echo "| \`vanika-armeabi-v7a.apk\` | **ARM 32-bit** (Older Android phones) | $SIZE |" >> $GITHUB_STEP_SUMMARY
+          fi
+          if [ -f "dist/apks/vanika-x86_64.apk" ]; then
+            SIZE=$(du -h dist/apks/vanika-x86_64.apk | cut -f1)
+            echo "| \`vanika-x86_64.apk\` | **x86 64-bit** (Emulators, Chromebooks) | $SIZE |" >> $GITHUB_STEP_SUMMARY
+          fi
+          if [ -f "dist/apks/vanika-universal.apk" ]; then
+            SIZE=$(du -h dist/apks/vanika-universal.apk | cut -f1)
+            echo "| \`vanika-universal.apk\` | **Universal** (Runs on all Android devices) | $SIZE |" >> $GITHUB_STEP_SUMMARY
+          fi
+          if [ -f "dist/bundle/vanika-release.aab" ]; then
+            SIZE=$(du -h dist/bundle/vanika-release.aab | cut -f1)
+            echo "| \`vanika-release.aab\` | **Play Store Bundle** (Google Play Store) | $SIZE |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "#### 🔒 Checksums (SHA-256)" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          cat dist/all/SHA256SUMS.txt >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+
+      - name: Upload Split APKs (armeabi-v7a, arm64-v8a, x86_64)
+        if: ${{ github.event_name != 'workflow_dispatch' || github.event.inputs.build_split_apk != 'false' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: vanika-mobile-split-apks
+          path: |
+            mob-ui/dist/apks/vanika-arm64-v8a.apk
+            mob-ui/dist/apks/vanika-armeabi-v7a.apk
+            mob-ui/dist/apks/vanika-x86_64.apk
+          retention-days: 14
+
+      - name: Upload Universal APK
+        if: ${{ github.event_name != 'workflow_dispatch' || github.event.inputs.build_universal_apk != 'false' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: vanika-mobile-universal-apk
+          path: mob-ui/dist/apks/vanika-universal.apk
+          retention-days: 14
+
+      - name: Upload Android App Bundle
+        if: ${{ github.event_name != 'workflow_dispatch' || github.event.inputs.build_app_bundle != 'false' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: vanika-mobile-app-bundle
+          path: mob-ui/dist/bundle/vanika-release.aab
+          retention-days: 14
+
+      - name: Upload All Mobile Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: vanika-mobile-all-artifacts
+          path: mob-ui/dist/all/
+          retention-days: 14
+
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/mob-v') || startsWith(github.ref, 'refs/tags/v') || (github.event_name == 'workflow_dispatch' && github.event.inputs.create_release == 'true')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            mob-ui/dist/all/*
+          generate_release_notes: true
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
