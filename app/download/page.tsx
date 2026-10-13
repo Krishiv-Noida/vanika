@@ -20,7 +20,7 @@ const ARM64_APK_URL = `${GITHUB_RELEASE_BASE}/vanika-android-arm64-v8a.apk`;
 
 export default function DownloadPage() {
   return (
-    <div className="min-h-screen bg-[#020b08] text-white pt-24 pb-16 px-6 sm:px-12 lg:px-20">
+    <div className="min-h-screen bg-[#020b08] text-white pt-10 sm:pt-14 pb-20 px-6 sm:px-12 lg:px-20">
       <div className="container mx-auto max-w-5xl">
         
         {/* Back Link */}
@@ -52,23 +52,23 @@ export default function DownloadPage() {
             <div className="pt-2 flex flex-col sm:flex-row gap-4">
               <a
                 href={UNIVERSAL_APK_URL}
-                className="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-2xl bg-[#7ee787] hover:bg-[#68dc72] text-[#041d13] font-bold text-sm sm:text-base transition-all duration-300 shadow-[0_10px_30px_rgba(126,231,135,0.35)] hover:shadow-[0_15px_40px_rgba(126,231,135,0.5)] hover:-translate-y-0.5 active:translate-y-0"
+                className="inline-flex items-center justify-center gap-3.5 px-7 py-4 rounded-2xl bg-[#7ee787] hover:bg-[#68dc72] text-[#041d13] font-bold text-sm sm:text-base transition-all duration-300 shadow-[0_10px_30px_rgba(126,231,135,0.35)] hover:shadow-[0_15px_40px_rgba(126,231,135,0.5)] hover:-translate-y-0.5 active:translate-y-0"
               >
-                <Download className="w-5 h-5 text-[#041d13]" />
+                <Download className="w-5 h-5 text-[#041d13] shrink-0" />
                 <div className="text-left leading-tight">
-                  <div>Download APK (Universal)</div>
-                  <div className="text-[11px] font-normal opacity-80">Works on all Android phones • ~59 MB</div>
+                  <div className="font-bold">Download APK (Universal)</div>
+                  <div className="text-[11px] font-normal opacity-80 mt-0.5">Works on all Android phones • ~59 MB</div>
                 </div>
               </a>
 
               <a
                 href={ARM64_APK_URL}
-                className="inline-flex items-center justify-center gap-2.5 px-6 py-4 rounded-2xl bg-[#09261b] hover:bg-[#0f3a2b] border border-emerald-500/30 hover:border-emerald-400 text-emerald-100 font-semibold text-xs sm:text-sm transition-all duration-300"
+                className="inline-flex items-center justify-center gap-3 px-6 py-4 rounded-2xl bg-[#09261b] hover:bg-[#0f3a2b] border border-emerald-500/30 hover:border-emerald-400 text-emerald-100 font-semibold text-sm transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0"
               >
-                <Smartphone className="w-4 h-4 text-emerald-400" />
+                <Smartphone className="w-5 h-5 text-emerald-400 shrink-0" />
                 <div className="text-left leading-tight">
-                  <div>ARM64 Version</div>
-                  <div className="text-[10.5px] font-normal text-emerald-300/60">Modern Phones • ~26 MB</div>
+                  <div className="font-semibold text-white">ARM64 Version</div>
+                  <div className="text-[11px] font-normal text-emerald-300/60 mt-0.5">Modern Phones • ~26 MB</div>
                 </div>
               </a>
             </div>

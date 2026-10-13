@@ -52,7 +52,7 @@ export function WhyVanika() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {perks.map((perk) => {
             const Icon = perk.icon;
             return (
@@ -60,16 +60,16 @@ export function WhyVanika() {
                 key={perk.title}
                 maxTilt={12}
                 scale={1.03}
-                className="p-5 rounded-2xl bg-[#08261c]/60 border border-emerald-500/15 hover:border-emerald-400/40 hover:bg-[#0b3225]/80 transition-colors duration-300 h-full group"
+                className="p-6 rounded-2xl bg-[#08261c]/60 border border-emerald-500/15 hover:border-emerald-400/40 hover:bg-[#0b3225]/80 transition-colors duration-300 flex flex-col h-full group"
               >
-                <Card3DItem depth={30} className="w-10 h-10 rounded-xl bg-[#0f3427] border border-emerald-400/25 flex items-center justify-center mb-3.5 text-[#4ade80] group-hover:scale-110 transition-transform shadow-sm">
+                <Card3DItem depth={30} className="w-11 h-11 rounded-xl bg-[#0f3427] border border-emerald-400/25 flex items-center justify-center mb-4 text-[#4ade80] group-hover:scale-110 transition-transform shadow-sm">
                   <Icon className="w-5 h-5" />
                 </Card3DItem>
-                <Card3DItem depth={20}>
-                  <h3 className="text-sm font-bold text-white mb-1 group-hover:text-[#4ade80] transition-colors">
+                <Card3DItem depth={20} className="flex-1 flex flex-col justify-start">
+                  <h3 className="text-sm sm:text-base font-bold text-white mb-1.5 group-hover:text-[#4ade80] transition-colors">
                     {perk.title}
                   </h3>
-                  <p className="text-emerald-100/60 text-xs leading-relaxed font-light">
+                  <p className="text-emerald-100/60 text-xs sm:text-[13px] leading-relaxed font-light">
                     {perk.description}
                   </p>
                 </Card3DItem>

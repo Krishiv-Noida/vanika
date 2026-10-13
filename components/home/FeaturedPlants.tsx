@@ -157,47 +157,48 @@ export function FeaturedPlants() {
               </Card3DItem>
 
               {/* Product Info */}
-              <Card3DItem depth={18} className="space-y-1.5 flex-1 flex flex-col justify-between">
-                <div>
-                  <span className="text-[10px] font-medium text-emerald-400/80 uppercase tracking-wider">
+              <Card3DItem depth={18} className="flex-1 flex flex-col justify-between">
+                <div className="h-[62px] flex flex-col justify-between">
+                  <span className="text-[10px] font-semibold text-emerald-400/80 uppercase tracking-wider block">
                     {product.category}
                   </span>
-                  <h3 className="font-bold text-sm sm:text-base text-white group-hover:text-[#4ade80] transition-colors leading-tight">
+                  <h3 className="font-bold text-sm sm:text-base text-white group-hover:text-[#4ade80] transition-colors leading-tight line-clamp-1">
                     {product.name}
                   </h3>
-                  <p className="text-[11px] italic text-emerald-300/50">{product.scientificName}</p>
+                  <p className="text-[11px] italic text-emerald-300/50 truncate">{product.scientificName}</p>
                 </div>
 
-                {/* Quick Care Tags */}
-                <div className="flex items-center gap-3 py-1.5 text-[11px] text-emerald-200/70 border-y border-emerald-500/15">
-                  <div className="flex items-center gap-1">
-                    <Sun className="w-3 h-3 text-amber-400" />
+                {/* Quick Care Tags - Uniform Container */}
+                <div className="flex items-center justify-around py-2 px-3 my-3 rounded-xl bg-[#041911]/90 border border-emerald-500/15 text-[11px] text-emerald-200/80">
+                  <div className="flex items-center gap-1.5">
+                    <Sun className="w-3.5 h-3.5 text-amber-400" />
                     <span>{product.light}</span>
                   </div>
-                  <div className="flex items-center gap-1">
-                    <Droplets className="w-3 h-3 text-cyan-400" />
+                  <div className="w-[1px] h-3 bg-emerald-500/20" />
+                  <div className="flex items-center gap-1.5">
+                    <Droplets className="w-3.5 h-3.5 text-cyan-400" />
                     <span>{product.water}</span>
                   </div>
                 </div>
 
                 {/* Price & Add to Cart */}
-                <div className="flex items-center justify-between pt-1.5">
-                  <div>
-                    <div className="text-base font-bold text-[#4ade80]">
+                <div className="flex items-center justify-between pt-2 border-t border-emerald-500/10">
+                  <div className="flex items-baseline gap-1.5">
+                    <span className="text-base font-bold text-[#4ade80]">
                       ${product.price.toFixed(2)}
-                    </div>
-                    <div className="text-[10.5px] text-emerald-400/50 line-through">
+                    </span>
+                    <span className="text-[11px] text-emerald-400/50 line-through">
                       ${product.comparePrice.toFixed(2)}
-                    </div>
+                    </span>
                   </div>
 
                   <button
                     onClick={() => handleQuickAdd(product)}
                     style={{ transform: "translateZ(35px)" }}
-                    className="p-2.5 rounded-xl bg-[#4ade80] hover:bg-[#34d399] text-[#062419] font-bold transition-all shadow-[0_4px_12px_rgba(74,222,128,0.25)] hover:shadow-[0_6px_18px_rgba(74,222,128,0.4)] active:scale-90"
+                    className="w-9 h-9 rounded-xl bg-[#4ade80] hover:bg-[#34d399] text-[#062419] font-bold flex items-center justify-center transition-all shadow-[0_4px_12px_rgba(74,222,128,0.25)] hover:shadow-[0_6px_18px_rgba(74,222,128,0.4)] hover:scale-105 active:scale-90"
                     aria-label={`Add ${product.name} to cart`}
                   >
-                    <ShoppingBag className="w-3.5 h-3.5" />
+                    <ShoppingBag className="w-4 h-4" />
                   </button>
                 </div>
               </Card3DItem>

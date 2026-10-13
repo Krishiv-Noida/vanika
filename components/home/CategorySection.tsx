@@ -81,29 +81,31 @@ export function CategorySection() {
             >
               <Link
                 href={`/shop?category=${cat.value}` as any}
-                className="block h-full [transform-style:preserve-3d]"
+                className="flex flex-col justify-between h-full [transform-style:preserve-3d]"
               >
-                <div className="flex items-start justify-between mb-4">
-                  <Card3DItem depth={32} className="w-11 h-11 rounded-xl bg-emerald-500/15 border border-emerald-400/25 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform shadow-sm">
-                    {cat.emoji}
-                  </Card3DItem>
-                  <Card3DItem depth={24}>
-                    <span className="text-[10.5px] font-medium px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-300 border border-emerald-500/20 shadow-sm">
-                      {cat.count}
-                    </span>
+                <div>
+                  <div className="flex items-start justify-between mb-4">
+                    <Card3DItem depth={32} className="w-11 h-11 rounded-xl bg-emerald-500/15 border border-emerald-400/25 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform shadow-sm">
+                      {cat.emoji}
+                    </Card3DItem>
+                    <Card3DItem depth={24}>
+                      <span className="text-[10.5px] font-medium px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-300 border border-emerald-500/20 shadow-sm">
+                        {cat.count}
+                      </span>
+                    </Card3DItem>
+                  </div>
+
+                  <Card3DItem depth={22}>
+                    <h3 className="text-base font-bold text-white group-hover:text-[#4ade80] transition-colors mb-1.5">
+                      {cat.label}
+                    </h3>
+                    <p className="text-emerald-100/60 text-xs leading-relaxed font-light">
+                      {cat.description}
+                    </p>
                   </Card3DItem>
                 </div>
 
-                <Card3DItem depth={22}>
-                  <h3 className="text-base font-bold text-white group-hover:text-[#4ade80] transition-colors mb-1">
-                    {cat.label}
-                  </h3>
-                  <p className="text-emerald-100/60 text-xs leading-relaxed font-light">
-                    {cat.description}
-                  </p>
-                </Card3DItem>
-
-                <Card3DItem depth={26} className="mt-4 flex items-center gap-1 text-[11px] font-semibold text-emerald-400 group-hover:translate-x-1.5 transition-transform">
+                <Card3DItem depth={26} className="mt-5 pt-3 border-t border-emerald-500/10 flex items-center gap-1.5 text-xs font-semibold text-emerald-400 group-hover:translate-x-1.5 transition-transform">
                   <span>Browse Category</span>
                   <span>→</span>
                 </Card3DItem>
