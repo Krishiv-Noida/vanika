@@ -10,6 +10,10 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+defaults:
+  run:
+    working-directory: web-ui
+
 jobs:
   # ─────────────────────────────────────────────
   # Job 1: Lint
@@ -26,6 +30,7 @@ jobs:
         with:
           node-version: 20
           cache: npm
+          cache-dependency-path: web-ui/package-lock.json
 
       - name: Install dependencies
         run: npm ci
@@ -48,6 +53,7 @@ jobs:
         with:
           node-version: 20
           cache: npm
+          cache-dependency-path: web-ui/package-lock.json
 
       - name: Install dependencies
         run: npm ci
@@ -77,6 +83,7 @@ jobs:
         with:
           node-version: 20
           cache: npm
+          cache-dependency-path: web-ui/package-lock.json
 
       - name: Install dependencies
         run: npm ci
@@ -89,5 +96,6 @@ jobs:
         if: success()
         with:
           name: nextjs-build
-          path: .next/
+          path: web-ui/.next/
           retention-days: 1
+
