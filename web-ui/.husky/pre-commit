@@ -1,1 +1,5 @@
-npx lint-staged
+if [ -d "web-ui" ]; then
+  cd web-ui && npx lint-staged
+else
+  npx lint-staged
+fi

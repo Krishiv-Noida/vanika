@@ -70,6 +70,7 @@ export function Footer() {
                 { label: "Repotting 101", href: "/care-guides" },
                 { label: "Plant FAQ", href: "/care-guides" },
                 { label: "Track Your Order", href: "/cart" },
+                { label: "📱 Download Android App", href: "/download" },
               ].map((item) => (
                 <li key={item.label}>
                   <Link

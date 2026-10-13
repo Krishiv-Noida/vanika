@@ -4,7 +4,7 @@ import React, { useRef, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { ArrowRight, Leaf, Truck, ShieldCheck, Headphones, Sprout } from "lucide-react";
+import { ArrowRight, Leaf, Truck, ShieldCheck, Headphones, Sprout, Smartphone } from "lucide-react";
 import { useCartStore } from "@/store/cartStore";
 import toast from "react-hot-toast";
 import { BotanicalParticles3D } from "@/components/3d/BotanicalParticles3D";
@@ -205,6 +205,14 @@ export function HeroSection() {
                 className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3.5 rounded-full bg-transparent hover:bg-[#09291f] border border-[#215945] hover:border-[#4ade80]/50 text-white hover:text-[#7ee787] font-medium text-xs sm:text-sm transition-all duration-300 hover:-translate-y-0.5 active:translate-y-1 active:scale-[0.97]"
               >
                 <span>Explore Categories</span>
+              </Link>
+
+              <Link
+                href={"/download" as any}
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-full bg-[#082b1e]/70 hover:bg-[#0e3b2b] border border-[#1f5c46] hover:border-[#4ade80]/70 text-[#a7f3d0] hover:text-white font-medium text-xs sm:text-sm transition-all duration-300 hover:-translate-y-0.5 active:translate-y-1 active:scale-[0.97]"
+              >
+                <Smartphone className="w-4 h-4 text-[#7ee787]" />
+                <span>Get App</span>
               </Link>
             </motion.div>
           </div>

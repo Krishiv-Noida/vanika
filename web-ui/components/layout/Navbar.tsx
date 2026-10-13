@@ -24,6 +24,7 @@ export function Navbar() {
     { href: "/shop", label: "Plants" },
     { href: "/shop", label: "Categories" },
     { href: "/care-guides", label: "Plant Care" },
+    { href: "/download", label: "Get App" },
     { href: "/about", label: "About Us" },
   ];
 
