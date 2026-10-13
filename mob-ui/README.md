@@ -30,13 +30,17 @@ The project includes an automated GitHub Actions CI/CD pipeline configured at [`
 
 ## 📱 Platform Architectures & Generated Artifacts
 
-| Artifact | Target Architecture / Platform | Description |
-| :--- | :--- | :--- |
-| `vanika-arm64-v8a.apk` | **ARM 64-bit** (`arm64-v8a`) | Optimized for 90%+ of modern Android phones and tablets. Smaller file size, maximum performance. |
-| `vanika-armeabi-v7a.apk` | **ARM 32-bit** (`armeabi-v7a`) | Backwards compatibility for older 32-bit Android devices. |
-| `vanika-x86_64.apk` | **x86 64-bit** (`x86_64`) | Optimized for Android emulators, ChromeOS devices, and Intel/AMD tablets. |
-| `vanika-universal.apk` | **Universal** (Fat APK) | Single installer containing binaries for all ABIs; runs on any Android device. |
-| `vanika-release.aab` | **Android App Bundle** | Format required by Google Play Console for dynamic delivery. |
+| Platform | Artifact | Target Architecture / Platform | Description |
+| :--- | :--- | :--- | :--- |
+| **Android** | `vanika-android-arm64-v8a.apk` | **ARM 64-bit** (`arm64-v8a`) | Optimized for 90%+ modern Android phones and tablets |
+| **Android** | `vanika-android-armeabi-v7a.apk` | **ARM 32-bit** (`armeabi-v7a`) | Backwards compatibility for older 32-bit Android phones |
+| **Android** | `vanika-android-x86_64.apk` | **x86 64-bit** (`x86_64`) | Emulators, Chromebooks, and Intel/AMD tablets |
+| **Android** | `vanika-android-universal.apk` | **Universal** (Fat APK) | Single installer containing all architectures |
+| **Android** | `vanika-android.aab` | **Google Play Bundle** | Format required by Google Play Console |
+| **iOS** | `vanika-ios-unsigned.ipa` | **iOS Device Package** | Unsigned IPA for sideloading / testing / enterprise signing |
+| **iOS** | `vanika-ios-Runner.app.zip` | **iOS App Archive** | Compressed Runner.app bundle |
+| **macOS** | `vanika-macos.dmg` | **macOS Disk Image** | Drag-and-drop installer for macOS desktop |
+| **macOS** | `vanika-macos.app.zip` | **macOS App Archive** | Compressed native macOS app bundle |
 
 ---
 
