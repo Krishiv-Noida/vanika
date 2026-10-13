@@ -44,3 +44,12 @@ prisma/migrations/
 
 # Temporary screenshots
 images/
+
+# Flutter / Dart
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+mob-ui/build/
+mob-ui/.dart_tool/

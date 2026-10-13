@@ -2,27 +2,31 @@
 
 > *"Where nature meets your doorstep"*
 
-Monorepo repository for the **Vanika** project.
+Cross-platform botanical e-commerce monorepo for the **Vanika** project.
 
 ---
 
 ## 📁 Repository Structure
 
-- [`web-ui/`](./web-ui) — Modern Next.js 14 plants e-commerce web application with TypeScript, Tailwind CSS, and Prisma.
+- [`web-ui/`](./web-ui) — Modern Next.js 14 plants e-commerce web application with TypeScript, Tailwind CSS, 3D effects, and Prisma.
+- [`mob-ui/`](./mob-ui) — Multi-OS Flutter mobile app (Android, iOS, Web, Desktop) featuring 3D perspective cards, floating botanical particles, same typography (Playfair Display & Inter), emerald dark theme, and complete catalog, cart, and care guides.
 
 ---
 
 ## 🚀 Getting Started
 
-### Web UI
-To run the web application locally:
-
+### 🌐 Web UI
 ```bash
 cd web-ui
 npm install
 npm run dev
 ```
+Visit [http://localhost:3000](http://localhost:3000).
 
-Visit [http://localhost:3000](http://localhost:3000) in your browser.
-
-For full Web UI documentation, scripts, and database setup, see [`web-ui/README.md`](./web-ui/README.md).
+### 📱 Mobile UI (Flutter)
+```bash
+cd mob-ui
+flutter pub get
+flutter run
+```
+Supports running on Android devices/emulators, iOS simulators, Web (`flutter run -d chrome`), and Linux desktop (`flutter run -d linux`).
