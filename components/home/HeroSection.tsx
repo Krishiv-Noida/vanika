@@ -212,7 +212,7 @@ export function HeroSection() {
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-full bg-[#082b1e]/70 hover:bg-[#0e3b2b] border border-[#1f5c46] hover:border-[#4ade80]/70 text-[#a7f3d0] hover:text-white font-medium text-xs sm:text-sm transition-all duration-300 hover:-translate-y-0.5 active:translate-y-1 active:scale-[0.97]"
               >
                 <Smartphone className="w-4 h-4 text-[#7ee787]" />
-                <span>Get App</span>
+                <span>Download App</span>
               </Link>
             </motion.div>
           </div>

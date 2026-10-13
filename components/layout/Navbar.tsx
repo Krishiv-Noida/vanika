@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { Search, Heart, ShoppingCart, User, Menu, X } from "lucide-react";
+import { Search, Heart, ShoppingCart, User, Menu, X, Smartphone, Download } from "lucide-react";
 import { useCartStore } from "@/store/cartStore";
 import { useWishlistStore } from "@/store/wishlistStore";
 
@@ -24,7 +24,7 @@ export function Navbar() {
     { href: "/shop", label: "Plants" },
     { href: "/shop", label: "Categories" },
     { href: "/care-guides", label: "Plant Care" },
-    { href: "/download", label: "Get App" },
+    { href: "/download", label: "Download App" },
     { href: "/about", label: "About Us" },
   ];
 
@@ -187,6 +187,15 @@ export function Navbar() {
               className="text-emerald-100/85 hover:text-white hover:scale-110 transition-all p-1"
             >
               <User className="w-[17px] h-[17px]" strokeWidth={1.75} />
+            </Link>
+
+            {/* Download App Pill Button */}
+            <Link
+              href={"/download" as any}
+              className="hidden lg:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold text-[#041d13] bg-[#7ee787] hover:bg-[#86efac] transition-all duration-300 shadow-[0_2px_12px_rgba(126,231,135,0.35)] hover:scale-105 active:scale-95 ml-1"
+            >
+              <Smartphone className="w-3.5 h-3.5 text-[#041d13]" />
+              <span>Download App</span>
             </Link>
 
             {/* Mobile menu toggle */}
