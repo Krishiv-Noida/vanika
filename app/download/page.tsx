@@ -97,7 +97,7 @@ export default function DownloadPage() {
                   <span>Scan to Download</span>
                 </div>
                 <span className="text-[11px] text-emerald-300/70 font-mono">
-                  v1.0.0 APK
+                  v1.0.2 APK
                 </span>
               </div>
 
