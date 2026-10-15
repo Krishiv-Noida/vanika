@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { Search, Heart, ShoppingCart, User, Menu, X, Smartphone, Download } from "lucide-react";
+import { Search, Heart, ShoppingCart, User, Menu, X, Smartphone, Download, QrCode } from "lucide-react";
+import { QRCodeSVG } from "qrcode.react";
 import { useCartStore } from "@/store/cartStore";
 import { useWishlistStore } from "@/store/wishlistStore";
 
@@ -187,14 +188,45 @@ export function Navbar() {
               <User className="w-[18px] h-[18px]" strokeWidth={1.75} />
             </Link>
 
-            {/* Download App Pill Button */}
-            <Link
-              href={"/download" as any}
-              className="hidden lg:inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-semibold text-[#041d13] bg-[#7ee787] hover:bg-[#86efac] transition-all duration-300 shadow-[0_2px_12px_rgba(126,231,135,0.3)] hover:scale-105 active:scale-95 ml-1"
-            >
-              <Smartphone className="w-3.5 h-3.5 text-[#041d13]" />
-              <span>Download App</span>
-            </Link>
+            {/* Download App Pill Button with Hover QR Popover */}
+            <div className="relative group hidden lg:block">
+              <Link
+                href={"/download" as any}
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-semibold text-[#041d13] bg-[#7ee787] hover:bg-[#86efac] transition-all duration-300 shadow-[0_2px_12px_rgba(126,231,135,0.3)] hover:scale-105 active:scale-95 ml-1"
+              >
+                <Smartphone className="w-3.5 h-3.5 text-[#041d13]" />
+                <span>Download App</span>
+                <QrCode className="w-3 h-3 text-[#041d13]/70 ml-0.5" />
+              </Link>
+
+              {/* QR Preview Dropdown on Hover */}
+              <div className="absolute right-0 top-full pt-2 opacity-0 translate-y-1 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 z-50">
+                <div className="w-60 p-4 rounded-2xl bg-[#061f16] border border-emerald-500/30 shadow-[0_20px_50px_rgba(0,0,0,0.8)] text-center backdrop-blur-xl">
+                  <div className="flex items-center justify-center gap-1.5 text-[11px] font-semibold text-[#7ee787] mb-2.5">
+                    <QrCode className="w-3.5 h-3.5" />
+                    <span>Scan to Get Android App</span>
+                  </div>
+                  <div className="bg-white p-2.5 rounded-xl inline-block shadow-md">
+                    <QRCodeSVG
+                      value="https://github.com/Krishiv-Noida/vanika/releases/latest/download/vanika-android-universal.apk"
+                      size={130}
+                      level="M"
+                      bgColor="#ffffff"
+                      fgColor="#031811"
+                    />
+                  </div>
+                  <p className="text-[10px] text-emerald-200/70 mt-2 leading-tight">
+                    Scan with phone camera to download APK directly.
+                  </p>
+                  <Link
+                    href={"/download" as any}
+                    className="mt-2.5 block w-full py-1.5 rounded-lg bg-[#092b1e] hover:bg-[#0e3b2b] border border-emerald-500/30 text-[11px] text-[#7ee787] font-medium transition-colors"
+                  >
+                    All Versions &amp; Details →
+                  </Link>
+                </div>
+              </div>
+            </div>
 
             {/* Mobile menu toggle */}
             <button

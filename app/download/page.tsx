@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import { 
   Download, 
   Smartphone, 
@@ -11,14 +12,20 @@ import {
   ArrowLeft,
   Bell,
   Leaf,
-  Heart
+  Heart,
+  QrCode,
+  ScanLine
 } from "lucide-react";
+import { QRCodeSVG } from "qrcode.react";
 
-const GITHUB_RELEASE_BASE = "https://github.com/Krishiv-Noida/vanika-mobile-application/releases/latest/download";
+const GITHUB_RELEASE_BASE = "https://github.com/Krishiv-Noida/vanika/releases/latest/download";
 const UNIVERSAL_APK_URL = `${GITHUB_RELEASE_BASE}/vanika-android-universal.apk`;
 const ARM64_APK_URL = `${GITHUB_RELEASE_BASE}/vanika-android-arm64-v8a.apk`;
 
 export default function DownloadPage() {
+  const [selectedVariant, setSelectedVariant] = useState<"universal" | "arm64">("universal");
+  const activeUrl = selectedVariant === "universal" ? UNIVERSAL_APK_URL : ARM64_APK_URL;
+
   return (
     <div className="min-h-screen bg-[#020b08] text-white pt-10 sm:pt-14 pb-20 px-6 sm:px-12 lg:px-20">
       <div className="container mx-auto max-w-5xl">
@@ -80,31 +87,90 @@ export default function DownloadPage() {
             </div>
           </div>
 
-          {/* Visual Device Mockup Card */}
+          {/* Interactive QR Code Card */}
           <div className="lg:col-span-5 flex justify-center">
-            <div className="relative w-64 sm:w-72 p-6 rounded-3xl bg-gradient-to-b from-[#0a2f22] to-[#041811] border border-emerald-500/30 shadow-[0_25px_60px_rgba(0,0,0,0.7)] text-center space-y-4">
-              <div className="w-16 h-16 mx-auto rounded-2xl bg-[#7ee787]/15 border border-[#7ee787]/30 flex items-center justify-center text-[#7ee787]">
-                <Leaf className="w-8 h-8" />
-              </div>
-              <div>
-                <h3 className="font-serif text-xl text-white font-normal">Vanika Mobile</h3>
-                <p className="text-xs text-emerald-300/60 mt-1">Version 1.0.0 for Android</p>
+            <div className="relative w-full max-w-sm p-6 sm:p-7 rounded-3xl bg-gradient-to-b from-[#0a2f22] to-[#041811] border border-emerald-500/30 shadow-[0_25px_60px_rgba(0,0,0,0.7)] text-center space-y-4">
+              
+              <div className="flex items-center justify-between">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#03170f] border border-emerald-500/25 text-[#7ee787] text-[11px] font-semibold">
+                  <QrCode className="w-3.5 h-3.5 text-[#7ee787]" />
+                  <span>Scan to Download</span>
+                </div>
+                <span className="text-[11px] text-emerald-300/70 font-mono">
+                  v1.0.0 APK
+                </span>
               </div>
 
-              <div className="pt-2 pb-2 space-y-2 text-left text-xs text-emerald-100/80">
-                <div className="flex items-center gap-2.5 bg-[#03140e]/60 p-2.5 rounded-xl border border-emerald-500/15">
-                  <CheckCircle2 className="w-4 h-4 text-[#7ee787] shrink-0" />
-                  <span>Curated Indoor Plants</span>
-                </div>
-                <div className="flex items-center gap-2.5 bg-[#03140e]/60 p-2.5 rounded-xl border border-emerald-500/15">
-                  <Bell className="w-4 h-4 text-[#7ee787] shrink-0" />
-                  <span>Live Delivery Tracking</span>
-                </div>
-                <div className="flex items-center gap-2.5 bg-[#03140e]/60 p-2.5 rounded-xl border border-emerald-500/15">
-                  <Heart className="w-4 h-4 text-[#7ee787] shrink-0" />
-                  <span>Instant Wishlist & Orders</span>
+              {/* Scannable QR Code */}
+              <div className="relative mx-auto w-fit p-4 rounded-2xl bg-white shadow-[0_12px_36px_rgba(0,0,0,0.6)] border border-emerald-400/30 flex items-center justify-center">
+                <QRCodeSVG
+                  value={activeUrl}
+                  size={180}
+                  level="H"
+                  includeMargin={false}
+                  bgColor="#ffffff"
+                  fgColor="#031811"
+                />
+                {/* Center Vanika Mini Badge */}
+                <div className="absolute inset-0 m-auto w-10 h-10 rounded-xl bg-[#041d13] border-2 border-[#7ee787] flex items-center justify-center text-[#7ee787] shadow-lg pointer-events-none">
+                  <Leaf className="w-5 h-5 fill-[#7ee787]" />
                 </div>
               </div>
+
+              {/* Variant Selector Tabs */}
+              <div className="space-y-1.5 pt-1">
+                <div className="grid grid-cols-2 gap-1.5 bg-[#03150f] p-1.5 rounded-xl border border-emerald-500/20 text-xs">
+                  <button
+                    type="button"
+                    onClick={() => setSelectedVariant("universal")}
+                    className={`py-1.5 px-2 rounded-lg font-medium transition-all ${
+                      selectedVariant === "universal"
+                        ? "bg-[#7ee787] text-[#041d13] shadow-sm font-semibold"
+                        : "text-emerald-100/70 hover:text-white"
+                    }`}
+                  >
+                    Universal APK
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setSelectedVariant("arm64")}
+                    className={`py-1.5 px-2 rounded-lg font-medium transition-all ${
+                      selectedVariant === "arm64"
+                        ? "bg-[#7ee787] text-[#041d13] shadow-sm font-semibold"
+                        : "text-emerald-100/70 hover:text-white"
+                    }`}
+                  >
+                    ARM64 APK
+                  </button>
+                </div>
+                <p className="text-[11px] text-emerald-200/60 font-light">
+                  {selectedVariant === "universal" 
+                    ? "Point phone camera to download Universal APK (~59 MB)"
+                    : "Point phone camera to download ARM64 APK (~26 MB)"}
+                </p>
+              </div>
+
+              <div className="pt-1 flex items-center justify-center gap-2 text-xs text-emerald-200/80">
+                <ScanLine className="w-4 h-4 text-[#7ee787] shrink-0 animate-pulse" />
+                <span>Open phone camera &amp; scan code</span>
+              </div>
+
+              {/* Feature Highlights */}
+              <div className="pt-2 space-y-2 text-left text-xs text-emerald-100/80 border-t border-emerald-500/15">
+                <div className="flex items-center gap-2.5 pt-1">
+                  <CheckCircle2 className="w-4 h-4 text-[#7ee787] shrink-0" />
+                  <span>Direct install on Android</span>
+                </div>
+                <div className="flex items-center gap-2.5">
+                  <Bell className="w-4 h-4 text-[#7ee787] shrink-0" />
+                  <span>Live Delivery Tracking &amp; Care Guides</span>
+                </div>
+                <div className="flex items-center gap-2.5">
+                  <Heart className="w-4 h-4 text-[#7ee787] shrink-0" />
+                  <span>Curated Nursery-Fresh Plants</span>
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
