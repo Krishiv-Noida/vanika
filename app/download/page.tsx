@@ -14,8 +14,8 @@ import {
   Heart
 } from "lucide-react";
 
-const GITHUB_RELEASE_BASE = "https://github.com/Krishiv-Noida/vanika/releases/latest/download";
-const UNIVERSAL_APK_URL = `${GITHUB_RELEASE_BASE}/vanika-universal.apk`;
+const GITHUB_RELEASE_BASE = "https://github.com/Krishiv-Noida/vanika-mobile-application/releases/latest/download";
+const UNIVERSAL_APK_URL = `${GITHUB_RELEASE_BASE}/vanika-android-universal.apk`;
 const ARM64_APK_URL = `${GITHUB_RELEASE_BASE}/vanika-android-arm64-v8a.apk`;
 
 export default function DownloadPage() {
